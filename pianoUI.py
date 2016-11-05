@@ -26,7 +26,7 @@ class TimeSliceMatrix():
 
     def __init__(self):
         self.total_rows = int(timeFrame/timeSlice) #for now, 4 rows.
-        self.song = noteParser.getMIDISong()
+        self.song = noteParser.getStillAlive()
         self.timeSlice_index = len(self.song.data)
         self.keyslice = noteParser.TimeSlice()
 
