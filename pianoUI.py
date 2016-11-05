@@ -9,6 +9,8 @@ Game logic - the general game running
 current_time = 0.
 timeSlice = .25 #each slice of time that contains true false for each note
 timeFrame = 2.0 #Notes will show up on screen 2 seconds before playtime.
+comparisonSlice = 0 #The timeSlice to compare the current keypress with.
+keySlice = 0 #The current keySlice, which is generated when a key is pressed.
 
 
 class keyNote:
@@ -33,11 +35,21 @@ class TimeSliceMatrix():
         self.song =  noteParser.getMIDISong()
         time_index = int(current_time/timeSlice)
         if time_index + self.total_rows <= len(self.song.data):
+            comparisonSlice = self.song.data[time_index]
+            compareSlice()
             self.song.data = self.song.data[time_index : time_index + self.total_rows]
             base_slice = noteParser.TimeSlice()
             #Enter a if key pressed here, change it to GOLD instead of base.
             base_slice.notesActive = [BASE] * noteParser.numNotes
             self.song.data = [base_slice] + self.song.data
+
+    def compareSlice(self):
+        #assuming that a keypress generates a timeslice.
+        if keySlice == comparisonSlice: #If it matches up, transforms it to GREAT
+            for i in comparisonSlice:
+                if i is True:
+                    i = GREAT
+                    self.song.data[time_index] = comparisonSlice
 
 
 
@@ -49,12 +61,14 @@ tileWidth = 80 #pixels
 tileHeight = 40
 mapWidth = noteParser.numNotes
 mapHeight = 9
-BASE = 0
+BASE = 3
+GREAT = 4
 
 WHITE = (255, 255, 255)
 PINK = (255, 20, 147)
 BLACK = (0, 0, 0)
 GOLD = (255, 215,0)
+GREEN = (102, 255, 0)
 
 keyDict = {'q':0, 'w':1, 'e':2, }
 
@@ -65,7 +79,7 @@ def getColor(val):
         return PINK
     if val is BASE:
         return BLACK
-    if val is PRESSED:
+    if val is GREAT:
         return GOLD
 
 
@@ -80,7 +94,7 @@ if __name__ == "__main__":
                 pygame.quit()
                 sys.exit()
 
-        test.getCurrentFrame()
+        test.getCurrentFrame() #Some kind of input to be determined later
         for row in range(mapHeight):
             for column in range(mapWidth):
                 color = getColor(test.song.data[row].notesActive[column])
