@@ -42,7 +42,7 @@
      id="base"
      inkscape:zoom="3.611555"
      inkscape:cx="29.243121"
-     inkscape:cy="167.1057"
+     inkscape:cy="133.87901"
      inkscape:window-x="0"
      inkscape:window-y="27"
      inkscape:current-layer="layer3"
@@ -191,16 +191,16 @@
      style="display:inline"
      transform="translate(-14.37421,-12.399425)">
     <g
-       style="display:inline"
+       style="display:inline;stroke:#00ff00;stroke-width:0.03125;stroke-miterlimit:4;stroke-dasharray:none"
        id="g5649"
        transform="translate(28.585357,30.934838)">
       <g
          id="g4361"
          transform="matrix(4.0613877,0,0,3.7963491,-1514.4923,64.721073)"
-         style="stroke-width:0.22920401;stroke-miterlimit:4;stroke-dasharray:none" />
+         style="stroke-width:0.00795847;stroke-miterlimit:4;stroke-dasharray:none;stroke:#00ff00" />
       <g
          id="g4349"
-         style="fill:#ffffff;fill-opacity:1;stroke-width:0.35787636;stroke-miterlimit:4;stroke-dasharray:none"
+         style="fill:#ffffff;fill-opacity:1;stroke-width:0.02316578;stroke-miterlimit:4;stroke-dasharray:none;stroke:#00ff00"
          transform="matrix(3.3126124,0,0,0.54933281,-1310.8275,12.057747)">
         <rect
            ry="0.99810487"
@@ -210,7 +210,7 @@
            height="98.350662"
            width="15.547491"
            id="use4148"
-           style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.35787636;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+           style="fill:#ffffff;fill-opacity:1;stroke:#00ff00;stroke-width:0.02316578;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       </g>
     </g>
   </g>
