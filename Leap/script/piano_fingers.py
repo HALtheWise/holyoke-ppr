@@ -13,9 +13,6 @@ sys.path.insert(0, lib_dir)
 import Leap
 from Leap import CircleGesture, KeyTapGesture, ScreenTapGesture, SwipeGesture
 
-from mingus.midi import fluidsynth
-fluidsynth.init('/usr/share/sounds/sf2/FluidR3_GM.sf2',"alsa")
-
 import piano_key
 
 class PianoFingers:
@@ -77,24 +74,18 @@ class PianoFingers:
                 if key is not None:
                     pressed_keys.append(key)
 
-
-
-
         if not (frame.hands.is_empty):
             print ""
-        print pressed_keys
 
 
+        return pressed_keys
 
 
     def if_pressed(self, bone):
 
         if bone.next_joint.y < self.pressed:
-            # print "OMG you pressed a key!"
-
             for i in range(len(self.pkeys)):
                 if self.pkeys[i].is_pressed(bone):
-                    fluidsynth.play_Note((i+1)*15,0,100)
                     return i
 
         return None
@@ -120,7 +111,6 @@ def main():
     print "Press Enter to quit..."
     try:
         while 1:
-            # sys.stdin.readline()
             piano.on_frame()
     except KeyboardInterrupt:
         pass
