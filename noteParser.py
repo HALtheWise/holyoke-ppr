@@ -9,7 +9,7 @@ from mido import MidiFile
 
 import math
 
-numNotes = 20
+numNotes = 24
 
 class TimeSlice():
 	"""docstring for TimeSlice"""
@@ -52,7 +52,7 @@ class Song():
 	__repr__ = __str__
 
 
-def getMIDISong(filename='test data/birthday-single.mid'):
+def getMIDISong(filename='test data/birthday-single.mid', lowfilter=52, lengthfilter=None):
 	""" Code adapted from
 	https://github.com/olemb/mido/blob/master/examples/midifiles/print_midi_file.py"""
 
@@ -71,10 +71,18 @@ def getMIDISong(filename='test data/birthday-single.mid'):
 		if msg.type == 'note_on':
 			notes.append((elapsedtime, msg.note, findNoteDuration(track, msg.note, i+1)))
 
+	notes = [n for n in notes if n[1] >= lowfilter]
+
+	if lengthfilter:
+		notes = [n for n in notes if n[0] <= lengthfilter]
+
 	return notesToSong(notes)
 
 
-def notesToSong(notes, dt = 0.25, midispeed = 96*4, baseID = 60):
+def getStillAlive():
+	getMIDISong(filename='test data/still-alive.mid', lowfilter=55, lengthfilter=10000)
+
+def notesToSong(notes, dt = 0.25, midispeed = 96*4, baseID = 52):
 	def convertNoteID(noteID):
 		result = noteID - baseID
 		if (result < 0):
