@@ -71,7 +71,8 @@ def getMIDISong(filename='test data/birthday-single.mid'):
 		if msg.type == 'note_on':
 			notes.append((elapsedtime, msg.note, findNoteDuration(track, msg.note, i+1)))
 
-	return notes
+	return notesToSong(notes)
+
 
 def notesToSong(notes, dt = 0.25, midispeed = 96*4, baseID = 60):
 	def convertNoteID(noteID):
@@ -83,19 +84,22 @@ def notesToSong(notes, dt = 0.25, midispeed = 96*4, baseID = 60):
 		return result
 
 	def convertTime(time):
-		return int(math.ceil(time/midispeed/dt))
+		return int(math.ceil(float(time)/midispeed/dt))
 
 	duration = convertTime(notes[len(notes)-1][0] + notes[len(notes)-1][2])
 
 	# Initialize timeslices
-	timeslices = [TimeSlice() for _ in xrange(duration)]
+	bufferzone = 20;
+	timeslices = [TimeSlice() for _ in xrange(duration + bufferzone)]
 
 	# Populate timeslices
 	for note in notes:
 		for i in xrange(convertTime(note[0]), convertTime(note[0]+note[2])):
 			timeslices[i].setNote(convertNoteID(note[1]), True)
 
-	return Song(timeslices)
+	song = Song(timeslices)
+	song.dt = dt
+	return song
 
 
 def findNoteDuration(track, noteID, startpos):
@@ -135,4 +139,4 @@ def getTestSong():
 	return song
 
 if __name__ == '__main__':
-	print notesToSong(getMIDISong())
+	print getMIDISong()

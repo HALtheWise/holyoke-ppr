@@ -81,7 +81,7 @@ class PianoFingers:
     def if_pressed(self, bone):
 
         if bone.next_joint.y < self.pressed:
-            print "OMG YOU CLICKED A PIANO KEY AHHHHHHHHHHHH"
+            
 
         for i in range(length(pkeys)):
             if pkeys[i].is_pressed(bone)
