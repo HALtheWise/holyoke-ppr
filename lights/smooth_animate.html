@@ -1,0 +1,85 @@
+<script>
+	'use strict'
+	var xhr=new XMLHttpRequest();
+	function send_frame(frame) {
+		xhr.open('GET','http://192.168.4.1/cc?pixels='+frame,true);
+		xhr.send();
+	}
+	function send_brightness(brightness) {
+		xhr.open('GET','http://192.168.4.1/cc?brightness='+brightness,true);
+		xhr.send();
+	}
+	function color2hex(c) {
+		function hex(x) { return ('0' + parseInt(x).toString(16)).slice(-2); }
+		return '' + hex((c>>16)&0xFF) + hex((c>>8)&0xFF) + hex(c&0xFF);
+	}
+
+	function pixels2frame(pixels) {
+		var comm='',r,c;
+		for(r=0;r<7;r++) {
+			for(c=0;c<5;c++) {
+				comm+=color2hex(pixels[r][c]);
+			}
+		}
+		return comm;
+	}
+
+	function fade(c, amount) {
+		amount = Math.sqrt(amount)
+		var r=((c>>0)&0xFF) * amount
+		var g=((c>>8)&0xFF) * amount
+		var b=((c>>16)&0xFF) * amount
+
+		return r + (g<<8) + (b<<16)
+	}
+
+	// Which LEDs should turn on each time step?
+	var pattern=	
+						[	[3,3,3,3,3],
+							[3,2,2,2,3],
+							[3,2,1,2,3],
+							[3,2,1,2,3],
+							[3,2,1,2,3],
+							[3,2,2,2,3],
+							[3,3,3,3,3]];
+
+	var numFrames = 5;
+
+	function generate(frame_index, color) {
+		var pixels=new Array(7);
+
+		for (var i = 0; i < pixels.length; i++) {
+			pixels[i] = new Array(5);
+		}
+
+		// generate frames dynamically
+
+		var mapfunc = function(patval, curval) {
+			if (Math.abs(patval - curval) >= 1) {
+				return 0
+			}
+			return fade(color, (1 - Math.abs(patval-curval)));
+		}
+
+		for (var i = 0; i < pattern.length; i++) {
+			for (var j = 0; j < pattern[0].length; j++) {
+				pixels[i][j] = mapfunc(pattern[i][j], frame_index);
+			}
+		}
+		
+		return pixels;
+	}
+
+	function animate() {
+		var current_frame = (Date.now() / 150) % numFrames
+		var pixels=generate(current_frame, 0x008080);
+
+		// send frames
+		send_frame(pixels2frame(pixels));
+		current_frame = (current_frame+1) % numFrames;
+	}
+
+	send_brightness(48);
+	setInterval(animate, 10);	// 100ms interval
+
+</script>
