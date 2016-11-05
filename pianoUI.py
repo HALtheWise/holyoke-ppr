@@ -32,7 +32,7 @@ class TimeSliceMatrix():
 
 
     def getCurrentFrame(self):
-        self.song =  noteParser.getMIDISong()
+        self.song =  noteParser.getStillAlive()
         time_index = int(current_time/timeSlice)
         if time_index + self.total_rows <= len(self.song.data):
             first_slice = self.song.data[time_index]
