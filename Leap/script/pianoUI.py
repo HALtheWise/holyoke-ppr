@@ -150,19 +150,19 @@ def process_events(keyslice):
     if (k[6] == True or k[7] == True) and history[4] == False:
         KEYS[4] = 1
         keyslice.notesActive[4] = True
-        fluidsynth.play_Note(Note("A-4"))
+        fluidsynth.play_Note(Note("A-3"))
         history[4] = True
 
     if k[8] == True and history[5] == False:
         KEYS[5] = 1
         keyslice.notesActive[5] = True
-        fluidsynth.play_Note(Note("A#-4"))
+        fluidsynth.play_Note(Note("A#-3"))
         history[5] = True
 
     if (k[9] == True or k[10] == True) and history[6] == False:
         KEYS[6] = 1
         keyslice.notesActive[6] = True
-        fluidsynth.play_Note(Note("B-4"))
+        fluidsynth.play_Note(Note("B-3"))
         history[6] = True
 
     if (k[11] == True or k[12] == True) and history[7] == False:
@@ -221,17 +221,17 @@ def process_events(keyslice):
     if( k[25] == True or k[26] == True) and history[16] == False:
         KEYS[16] = 1
         keyslice.notesActive[16] = True
-        fluidsynth.play_Note(Note("A-5"))
+        fluidsynth.play_Note(Note("A-4"))
         history[16] = True
     if k[27] == True and history[17] == False:
         KEYS[17] = 1
         keyslice.notesActive[17] = True
-        fluidsynth.play_Note(Note("A#-5"))
+        fluidsynth.play_Note(Note("A#-4"))
         history[17] = True
     if (k[28] == True or k[29] == True )and history[18] == False:
         KEYS[18] = 1
         keyslice.notesActive[18] = True
-        fluidsynth.play_Note(Note("B-5"))
+        fluidsynth.play_Note(Note("B-4"))
         history[18] = True
     if (k[30] == True or k[31] == True) and history[19] == False:
         KEYS[19] = 1
@@ -412,6 +412,6 @@ if __name__ == "__main__":
                     for i in range(24):
                         screen.blit(font.render(letters[i],False, (255,255,255)), (10 + i * 60, -5))
             time.sleep(.1)
-            current_time += .25
+            # current_time += .25
 
             pygame.display.update()
