@@ -30,15 +30,23 @@ class Song():
 	"""docstring for Song"""
 	dt = 0.25
 	data = []
-	
+
 	def __init__(self, data):
 		self.data = data
 
 	def __str__(self):
-		return '\n'.join(map(str,self.data))
+		result = []
+
+		chars = {False:'-', True:'x'}
+		result.append('note:\t\t{}'.format('\t'.join(map(str,range(numNotes)))))
+		for i, time in enumerate(self.data):
+			result.append("t={}\t\t{}".format(i * self.dt,
+				'\t'.join([chars[x] for x in time.notesActive])))
+
+		return '\n'.join(result)
 
 	__repr__ = __str__
-		
+
 
 def getTestSong():
 	song = Song([
@@ -54,7 +62,6 @@ def getTestSong():
 		])
 
 	return song
-
 
 if __name__ == '__main__':
 	print getTestSong()
