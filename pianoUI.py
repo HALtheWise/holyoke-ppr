@@ -30,8 +30,9 @@ class TimeSliceMatrix():
         #Matrix = [[0 for x in range(w)] for y in range(h)]
 
     def getCurrentFrame(self):
+        self.song = noteParser.getTestSong()
         time_index = int(current_time/timeSlice)
-        if time_index + 7 <= len(self.song.data):
+        if time_index + 4 <= len(self.song.data):
             self.song.data = self.song.data[time_index : time_index + self.total_rows]
             base_slice = noteParser.TimeSlice()
             base_slice.notesActive = [BASE] * noteParser.numNotes
@@ -43,7 +44,7 @@ class TimeSliceMatrix():
 Game UI (pygame)
 """
 tileSize = 80 #40 pixels
-mapWidth = 8
+mapWidth = noteParser.numNotes
 mapHeight = 5
 BASE = 0
 
@@ -64,13 +65,10 @@ if __name__ == "__main__":
     pygame.init()
     DISPLAYSURF = pygame.display.set_mode((mapWidth*tileSize, mapHeight*tileSize))
     test = TimeSliceMatrix()
-    test.getCurrentFrame()
     for row in range(mapHeight):
         for column in range(mapWidth):
             color = getColor(test.song.data[row].notesActive[column])
             pygame.draw.rect(DISPLAYSURF, color,(column*tileSize, row*tileSize, tileSize, tileSize))
-            print color
-
 
     while True:
         for event in pygame.event.get():
@@ -78,10 +76,12 @@ if __name__ == "__main__":
                 pygame.quit()
                 sys.exit()
 
+        test.getCurrentFrame()
         for row in range(mapHeight):
             for column in range(mapWidth):
                 color = getColor(test.song.data[row].notesActive[column])
                 pygame.draw.rect(DISPLAYSURF, color,(column*tileSize, row*tileSize, tileSize, tileSize))
-
+        time.sleep(1)
+        current_time += .25
 
         pygame.display.update()
