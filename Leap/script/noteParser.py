@@ -9,7 +9,7 @@ from mido import MidiFile
 
 import math
 
-numNotes = 20
+numNotes = 24
 
 class TimeSlice():
 	"""docstring for TimeSlice"""

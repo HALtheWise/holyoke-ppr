@@ -7,7 +7,7 @@
 # ###############################################################################
 import os, sys, inspect, thread, time
 src_dir = os.path.dirname(inspect.getfile(inspect.currentframe()))
-lib_dir = os.path.abspath(os.path.join(src_dir, '../../../lib2'))
+lib_dir = os.path.abspath(os.path.join(src_dir, '../lib'))
 sys.path.insert(0, lib_dir)
 
 import Leap
@@ -17,11 +17,13 @@ import piano_key
 
 class PianoFingers:
     def __init__(self, controller, pkeys):
-        self.pressed = 230
+        self.pressed = 250
         self.controller = controller
         self.pkeys = pkeys
         self.finger_names = ['Thumb', 'Index', 'Middle', 'Ring', 'Pinky']
         self.bone_names = ['Metacarpal', 'Proximal', 'Intermediate', 'Distal']
+        self.pressed_keys = [False] * 38
+        self.unpressed_keys = [False] * 38
 
 
     def on_frame(self):
@@ -33,7 +35,8 @@ class PianoFingers:
             #   frame.id, frame.timestamp, len(frame.hands), len(frame.fingers), len(frame.tools), len(frame.gestures()))
 
         # Get hands
-        pressed_keys = []
+        self.pressed_keys = [False] * 38
+        self.unpressed_keys = [False] * 38
 
         for hand in frame.hands:
 
@@ -65,23 +68,19 @@ class PianoFingers:
 
                 # Get bone
                 # if self.finger_names[finger.type] == "Index":
-                # print "    %s finger" % (self.finger_names[finger.type])
-
+                #     print "    %s finger" % (self.finger_names[finger.type])
+                #
                 bone = finger.bone(3)
                 # print "      Bone: %s, end: %s" % (self.bone_names[bone.type], bone.next_joint)
 
-                key = self.if_pressed(bone)
-                if key is not None:
-                    pressed_keys.append(key)
+                self.if_pressed(bone)
+
 
         if not (frame.hands.is_empty):
             print ""
 
-        if len(pressed_keys) > 0:
-            return True, pressed_keys
 
-        else:
-            return False, pressed_keys
+        return self.pressed_keys, self.unpressed_keys
 
 
     def if_pressed(self, bone):
@@ -89,9 +88,11 @@ class PianoFingers:
         if bone.next_joint.y < self.pressed:
             for i in range(len(self.pkeys)):
                 if self.pkeys[i].is_pressed(bone):
-                    return i
+                    self.pressed_keys[i] = True
+        self.unpressed_keys = [not item for item in self.pressed_keys]
 
-        return None
+
+
 
 
 
