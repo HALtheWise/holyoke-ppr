@@ -7,6 +7,7 @@ import time
 Game logic - the general game running
 """
 current_time = 0.
+previous_time = 0.
 timeSlice = .25 #each slice of time that contains true false for each note
 timeFrame = 4.0 #Notes will show up on screen 2 seconds before playtime.
 
@@ -56,6 +57,19 @@ class TimeSliceMatrix():
                     first_slice.notesActive[i] = 'red'
 
         return first_slice
+
+    def getNormalFrame(self):
+        self.song =  noteParser.getMIDISong()
+        time_index = int(current_time/timeSlice)
+        if time_index + self.total_rows <= len(self.song.data):
+            self.song.data = self.song.data[time_index : time_index + self.total_rows]
+            base_slice = noteParser.TimeSlice()
+
+            base_slice.notesActive = [0] * noteParser.numNotes
+            self.song.data = [base_slice] + self.song.data
+
+        else:
+            sys.exit()
 
 
 
@@ -189,14 +203,16 @@ if __name__ == "__main__":
 
 
     while True:
+        if (time.clock() - previous_time) >= timeSlice/3:
+            test.getNormalFrame()
+            current_time += .25
+            previous_time = time.clock()
         test.getCurrentFrame()
-        for row in range(mapHeight):
+        for row in range(mapHeight): #Draw will update constantly, frame will not.
             for column in range(mapWidth):
                 color = getColor(test.song.data[row].notesActive[column])
                 pygame.draw.rect(screen, color,(column*tileSize, row*tileHeight, tileSize, tileHeight))
                 for i in range(10):
                     screen.blit(font.render(str(i+1),False, (255,255,255)), (10 + i * 80, -5))
-        time.sleep(.01)
-        current_time += .25
 
-        pygame.display.update()
+            pygame.display.update()
