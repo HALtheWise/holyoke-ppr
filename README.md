@@ -1,3 +1,3 @@
-# Holyoke-swagteamalpha
+# PianoPianoRevolution
 
 HackHolyoke 2016
