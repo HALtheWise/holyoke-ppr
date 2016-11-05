@@ -7,21 +7,28 @@
 # ###############################################################################
 import os, sys, inspect, thread, time
 src_dir = os.path.dirname(inspect.getfile(inspect.currentframe()))
-lib_dir = os.path.abspath(os.path.join(src_dir, '../lib'))
+lib_dir = os.path.abspath(os.path.join(src_dir, '../../../lib2'))
 sys.path.insert(0, lib_dir)
 
 import Leap
 from Leap import CircleGesture, KeyTapGesture, ScreenTapGesture, SwipeGesture
 
+from mingus.midi import fluidsynth
+fluidsynth.init('/usr/share/sounds/sf2/FluidR3_GM.sf2',"alsa")
+
+import piano_key
+
 class PianoFingers:
-    def __init__(self, controller):
-        self.pressed = 50
+    def __init__(self, controller, pkeys):
+        self.pressed = 230
         self.controller = controller
+        self.pkeys = pkeys
         self.finger_names = ['Thumb', 'Index', 'Middle', 'Ring', 'Pinky']
         self.bone_names = ['Metacarpal', 'Proximal', 'Intermediate', 'Distal']
 
 
     def on_frame(self):
+
         # Get the most recent frame and report some basic information
         frame = self.controller.frame()
 
@@ -29,12 +36,14 @@ class PianoFingers:
             #   frame.id, frame.timestamp, len(frame.hands), len(frame.fingers), len(frame.tools), len(frame.gestures()))
 
         # Get hands
+        pressed_keys = []
+
         for hand in frame.hands:
 
             handType = "Left hand" if hand.is_left else "Right hand"
 
-            # print "  %s, position: %s" % (
-                # handType, hand.palm_position)
+            print "  %s, position: %s" % (
+                handType, hand.palm_position)
 
             # Get the hand's normal vector and direction
             # normal = hand.palm_normal
@@ -56,20 +65,24 @@ class PianoFingers:
             # Get fingers
             for finger in hand.fingers:
 
-                # print "    %s finger" % (self.finger_names[finger.type])
 
                 # Get bone
-                bone = finger.bone(3)
-                # print "      Bone: %s, end: %s" % (
-                    # self.bone_names[bone.type],
-                    # bone.next_joint)
+                # if self.finger_names[finger.type] == "Index":
+                # print "    %s finger" % (self.finger_names[finger.type])
 
-                self.if_pressed(bone)
+                bone = finger.bone(3)
+                # print "      Bone: %s, end: %s" % (self.bone_names[bone.type], bone.next_joint)
+
+                key = self.if_pressed(bone)
+                if key is not None:
+                    pressed_keys.append(key)
+
 
 
 
         if not (frame.hands.is_empty):
             print ""
+        print pressed_keys
 
 
 
@@ -77,7 +90,17 @@ class PianoFingers:
     def if_pressed(self, bone):
 
         if bone.next_joint.y < self.pressed:
-            print "OMG YOU CLICKED A PIANO KEY AHHHHHHHHHHHH"
+            # print "OMG you pressed a key!"
+
+            for i in range(len(self.pkeys)):
+                if self.pkeys[i].is_pressed(bone):
+                    fluidsynth.play_Note((i+1)*15,0,100)
+                    return i
+
+        return None
+
+
+
 
 
 
@@ -86,7 +109,11 @@ def main():
     # Create a controller
     controller = Leap.Controller()
 
-    piano = PianoFingers(controller)
+    pkeys = piano_key.create_piano_keys()
+
+
+    piano = PianoFingers(controller, pkeys)
+
 
 
     # Keep this process running until Enter is pressed
