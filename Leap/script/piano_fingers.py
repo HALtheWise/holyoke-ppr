@@ -13,10 +13,14 @@ sys.path.insert(0, lib_dir)
 import Leap
 from Leap import CircleGesture, KeyTapGesture, ScreenTapGesture, SwipeGesture
 
+
+import piano_keys
+
 class PianoFingers:
-    def __init__(self, controller):
-        self.pressed = 50
+    def __init__(self, controller, pkeys):
+        self.pressed = 220
         self.controller = controller
+        self.pkeys = pkeys
         self.finger_names = ['Thumb', 'Index', 'Middle', 'Ring', 'Pinky']
         self.bone_names = ['Metacarpal', 'Proximal', 'Intermediate', 'Distal']
 
@@ -56,13 +60,13 @@ class PianoFingers:
             # Get fingers
             for finger in hand.fingers:
 
-                # print "    %s finger" % (self.finger_names[finger.type])
 
                 # Get bone
-                bone = finger.bone(3)
-                # print "      Bone: %s, end: %s" % (
-                    # self.bone_names[bone.type],
-                    # bone.next_joint)
+                if self.finger_names[finger.type] == "Index":
+                    print "    %s finger" % (self.finger_names[finger.type])
+
+                    bone = finger.bone(3)
+                    print "      Bone: %s, end: %s" % (self.bone_names[bone.type], bone.next_joint)
 
                 self.if_pressed(bone)
 
@@ -79,6 +83,15 @@ class PianoFingers:
         if bone.next_joint.y < self.pressed:
             print "OMG YOU CLICKED A PIANO KEY AHHHHHHHHHHHH"
 
+        for i in range(length(pkeys)):
+            if pkeys[i].is_pressed(bone)
+                return i
+
+
+
+
+
+
 
 
 def main():
@@ -86,7 +99,11 @@ def main():
     # Create a controller
     controller = Leap.Controller()
 
-    piano = PianoFingers(controller)
+    pkeys = piano_keys.create_piano_keys()
+
+
+    piano = PianoFingers(controller, pkeys)
+
 
 
     # Keep this process running until Enter is pressed
