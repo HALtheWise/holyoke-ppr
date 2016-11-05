@@ -14,11 +14,11 @@ import Leap
 from Leap import CircleGesture, KeyTapGesture, ScreenTapGesture, SwipeGesture
 
 
-import piano_keys
+import piano_key
 
 class PianoFingers:
     def __init__(self, controller, pkeys):
-        self.pressed = 220
+        self.pressed = 230
         self.controller = controller
         self.pkeys = pkeys
         self.finger_names = ['Thumb', 'Index', 'Middle', 'Ring', 'Pinky']
@@ -26,6 +26,7 @@ class PianoFingers:
 
 
     def on_frame(self):
+
         # Get the most recent frame and report some basic information
         frame = self.controller.frame()
 
@@ -33,12 +34,14 @@ class PianoFingers:
             #   frame.id, frame.timestamp, len(frame.hands), len(frame.fingers), len(frame.tools), len(frame.gestures()))
 
         # Get hands
+        pressed_keys = []
+
         for hand in frame.hands:
 
             handType = "Left hand" if hand.is_left else "Right hand"
 
-            # print "  %s, position: %s" % (
-                # handType, hand.palm_position)
+            print "  %s, position: %s" % (
+                handType, hand.palm_position)
 
             # Get the hand's normal vector and direction
             # normal = hand.palm_normal
@@ -62,18 +65,22 @@ class PianoFingers:
 
 
                 # Get bone
-                if self.finger_names[finger.type] == "Index":
-                    print "    %s finger" % (self.finger_names[finger.type])
+                # if self.finger_names[finger.type] == "Index":
+                # print "    %s finger" % (self.finger_names[finger.type])
 
-                    bone = finger.bone(3)
-                    print "      Bone: %s, end: %s" % (self.bone_names[bone.type], bone.next_joint)
+                bone = finger.bone(3)
+                # print "      Bone: %s, end: %s" % (self.bone_names[bone.type], bone.next_joint)
 
-                self.if_pressed(bone)
+                key = self.if_pressed(bone)
+                if key is not None:
+                    pressed_keys.append(key)
+
 
 
 
         if not (frame.hands.is_empty):
             print ""
+        print pressed_keys
 
 
 
@@ -81,13 +88,13 @@ class PianoFingers:
     def if_pressed(self, bone):
 
         if bone.next_joint.y < self.pressed:
-            
+            # print "OMG you pressed a key!"
 
-        for i in range(length(pkeys)):
-            if pkeys[i].is_pressed(bone)
-                return i
+            for i in range(len(self.pkeys)):
+                if self.pkeys[i].is_pressed(bone):
+                    return i
 
-
+        return None
 
 
 
@@ -99,7 +106,7 @@ def main():
     # Create a controller
     controller = Leap.Controller()
 
-    pkeys = piano_keys.create_piano_keys()
+    pkeys = piano_key.create_piano_keys()
 
 
     piano = PianoFingers(controller, pkeys)
