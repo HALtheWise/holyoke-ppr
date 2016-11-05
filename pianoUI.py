@@ -96,8 +96,6 @@ def getColor(val):
 
 def process_events(keyslice):
 
-
-
     pygame.event.pump
     for event in pygame.event.get():
         if event.type == QUIT:
