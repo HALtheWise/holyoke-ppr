@@ -2,6 +2,7 @@ import pygame, sys
 from pygame.locals import *
 import noteParser
 import time
+
 from mingus.core import progressions, intervals
 from mingus.core import chords as ch
 from mingus.containers import NoteContainer, Note
@@ -113,7 +114,6 @@ def process_events(keyslice):
             sys.exit()
         elif event.type == pygame.KEYDOWN:
             k = event.key
-            print k
             if k == pygame.K_1:
                 print "1"
                 KEYS[0] = 1

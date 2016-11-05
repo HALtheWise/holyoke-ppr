@@ -77,8 +77,11 @@ class PianoFingers:
         if not (frame.hands.is_empty):
             print ""
 
+        if len(pressed_keys) > 0:
+            return True, pressed_keys
 
-        return pressed_keys
+        else:
+            return False, pressed_keys
 
 
     def if_pressed(self, bone):
