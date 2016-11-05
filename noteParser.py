@@ -88,7 +88,8 @@ def notesToSong(notes, dt = 0.25, midispeed = 96*4, baseID = 60):
 	duration = convertTime(notes[len(notes)-1][0] + notes[len(notes)-1][2])
 
 	# Initialize timeslices
-	timeslices = [TimeSlice() for _ in xrange(duration)]
+	bufferzone = 20;
+	timeslices = [TimeSlice() for _ in xrange(duration + bufferzone)]
 
 	# Populate timeslices
 	for note in notes:
@@ -135,4 +136,4 @@ def getTestSong():
 	return song
 
 if __name__ == '__main__':
-	print notesToSong(getMIDISong())
+	print getMIDISong()
