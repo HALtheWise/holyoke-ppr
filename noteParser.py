@@ -80,7 +80,7 @@ def getMIDISong(filename='test data/birthday-single.mid', lowfilter=52, lengthfi
 
 
 def getStillAlive():
-	getMIDISong(filename='test data/still-alive.mid', lowfilter=55, lengthfilter=10000)
+	return getMIDISong(filename='test data/still-alive.mid', lowfilter=55, lengthfilter=10000)
 
 def notesToSong(notes, dt = 0.25, midispeed = 96*4, baseID = 52):
 	def convertNoteID(noteID):
