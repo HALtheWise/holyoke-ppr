@@ -31,14 +31,11 @@ class TimeSliceMatrix():
 
     def getCurrentFrame(self):
         time_index = int(current_time/timeSlice)
-        if time_index + 7 <= len(song):
-            self.song = self.song[time_index : time_index + total_rows]
-            base = ([BASE, BASE, BASE, BASE, BASE, BASE ,BASE ,BASE])
-            self.song = base + self.song
-
-
-
-
+        if time_index + 7 <= len(self.song.data):
+            self.song.data = self.song.data[time_index : time_index + self.total_rows]
+            base_slice = noteParser.TimeSlice()
+            base_slice.notesActive = [BASE] * noteParser.numNotes
+            self.song.data = [base_slice] + self.song.data
 
 
 
@@ -54,18 +51,26 @@ WHITE = (255, 255, 255)
 PINK = (255, 20, 147)
 BLACK = (0, 0, 0)
 
-color = {
-            True : PINK,
-            False : WHITE,
-            BASE : BLACK
-          }
+def getColor(val):
+    if val is False:
+        return WHITE
+    if val is True:
+        return PINK
+    if val is BASE:
+        return BLACK
 
 
 if __name__ == "__main__":
     pygame.init()
     DISPLAYSURF = pygame.display.set_mode((mapWidth*tileSize, mapHeight*tileSize))
     test = TimeSliceMatrix()
-    test.getCurrentFrame
+    test.getCurrentFrame()
+    for row in range(mapHeight):
+        for column in range(mapWidth):
+            color = getColor(test.song.data[row].notesActive[column])
+            pygame.draw.rect(DISPLAYSURF, color,(column*tileSize, row*tileSize, tileSize, tileSize))
+            print color
+
 
     while True:
         for event in pygame.event.get():
@@ -75,7 +80,8 @@ if __name__ == "__main__":
 
         for row in range(mapHeight):
             for column in range(mapWidth):
-                pygame.draw.rect(DISPLAYSURF, color[test.song.data[row].notesActive[column]], \
-                (column*tileSize, row*tileSize, tileSize, tileSize))
+                color = getColor(test.song.data[row].notesActive[column])
+                pygame.draw.rect(DISPLAYSURF, color,(column*tileSize, row*tileSize, tileSize, tileSize))
+
 
         pygame.display.update()
