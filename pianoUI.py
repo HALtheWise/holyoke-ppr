@@ -24,17 +24,18 @@ class TimeSliceMatrix():
 
     def __init__(self):
         self.total_rows = int(timeFrame/timeSlice) #for now, 4 rows.
-        self.song = noteParser.notesToSong(noteParser.getMIDISong())
+        self.song = noteParser.getMIDISong()
         self.timeSlice_index = len(self.song.data)
         #w, h = noteParser.numNotes, total_rows
         #Matrix = [[0 for x in range(w)] for y in range(h)]
 
     def getCurrentFrame(self):
-        self.song =  noteParser.notesToSong(noteParser.getMIDISong())
+        self.song =  noteParser.getMIDISong()
         time_index = int(current_time/timeSlice)
         if time_index + self.total_rows <= len(self.song.data):
             self.song.data = self.song.data[time_index : time_index + self.total_rows]
             base_slice = noteParser.TimeSlice()
+            #Enter a if key pressed here, change it to GOLD instead of base.
             base_slice.notesActive = [BASE] * noteParser.numNotes
             self.song.data = [base_slice] + self.song.data
 
@@ -53,6 +54,9 @@ BASE = 0
 WHITE = (255, 255, 255)
 PINK = (255, 20, 147)
 BLACK = (0, 0, 0)
+GOLD = (255, 215,0)
+
+keyDict = {'q':0, 'w':1, 'e':2, }
 
 def getColor(val):
     if val is False:
@@ -61,6 +65,8 @@ def getColor(val):
         return PINK
     if val is BASE:
         return BLACK
+    if val is PRESSED:
+        return GOLD
 
 
 if __name__ == "__main__":
