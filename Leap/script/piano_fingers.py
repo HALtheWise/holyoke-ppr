@@ -13,6 +13,8 @@ sys.path.insert(0, lib_dir)
 import Leap
 from Leap import CircleGesture, KeyTapGesture, ScreenTapGesture, SwipeGesture
 
+from mingus.midi import fluidsynth
+fluidsynth.init('/usr/share/sounds/sf2/FluidR3_GM.sf2',"alsa")
 
 import piano_key
 
@@ -92,6 +94,7 @@ class PianoFingers:
 
             for i in range(len(self.pkeys)):
                 if self.pkeys[i].is_pressed(bone):
+                    fluidsynth.play_Note((i+1)*15,0,100)
                     return i
 
         return None
