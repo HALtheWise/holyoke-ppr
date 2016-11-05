@@ -63,7 +63,7 @@ def averageColors(a, b, w):
 
 d = Lights()
 
-def pulse(color = Color(r=0, g=255,b=255)):
+def pulse(color = Color(r=255, g=255,b=255)):
 	d.color = color
 
 def run():
