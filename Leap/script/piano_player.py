@@ -288,17 +288,17 @@ def process_events(keyslice):
     if k[6] == True and k[7] == True:
         KEYS[4] = 0
         keyslice.notesActive[4] = False
-        fluidsynth.stop_Note(Note("A-4"))
+        fluidsynth.stop_Note(Note("A-3"))
         history[4] = False
     if k[8] == True:
         KEYS[5] = 0
         keyslice.notesActive[5] = False
-        fluidsynth.stop_Note(Note("A#-4"))
+        fluidsynth.stop_Note(Note("A#-3"))
         history[5] = False
     if k[9] == True and k[10] == True:
         KEYS[6] = 0
         keyslice.notesActive[6] = False
-        fluidsynth.stop_Note(Note("B-4"))
+        fluidsynth.stop_Note(Note("B-3"))
         history[6] = False
     if k[11] == True and k[12] == True:
         KEYS[7] = 0
@@ -348,17 +348,17 @@ def process_events(keyslice):
     if k[25] == True and k[26] == True:
         KEYS[16] = 0
         keyslice.notesActive[16] = False
-        fluidsynth.stop_Note(Note("A-5"))
+        fluidsynth.stop_Note(Note("A-4"))
         history[16] = False
     if k[27] == True:
         KEYS[17] = 0
         keyslice.notesActive[17] = False
-        fluidsynth.stop_Note(Note("A#-5"))
+        fluidsynth.stop_Note(Note("A#-4"))
         history[17] = False
     if k[28] == True and k[29] == True:
         KEYS[18] = 0
         keyslice.notesActive[18] = False
-        fluidsynth.stop_Note(Note("B-5"))
+        fluidsynth.stop_Note(Note("B-4"))
         history[18] = False
     if k[30] == True and k[31] == True:
         KEYS[19] = 0
@@ -392,10 +392,10 @@ def process_events(keyslice):
 
 if __name__ == "__main__":
 
-    pygame.init()
-    pygame.font.init()
-    font = pygame.font.Font('Korean_Calligraphy.ttf', 40)
-    screen = pygame.display.set_mode((mapWidth*tileSize, mapHeight*tileHeight))
+    # pygame.init()
+    # pygame.font.init()
+    # font = pygame.font.Font('Korean_Calligraphy.ttf', 40)
+    # screen = pygame.display.set_mode((mapWidth*tileSize, mapHeight*tileHeight))
     test = TimeSliceMatrix()
     letters = ["F", "Gb", "G", "Ab", "A", "Bb", "B", 'C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab',
      'A', 'Bb', 'B', 'C', 'Db', 'D', 'Eb', 'E']
@@ -405,13 +405,13 @@ if __name__ == "__main__":
     if ready == 'y':
         while True:
             test.getCurrentFrame()
-            for row in range(mapHeight):
-                for column in range(mapWidth):
-                    color = getColor(test.song.data[row].notesActive[column])
-                    pygame.draw.rect(screen, color,(column*tileSize, row*tileHeight, tileSize, tileHeight))
-                    for i in range(24):
-                        screen.blit(font.render(letters[i],False, (255,255,255)), (10 + i * 60, -5))
+            # for row in range(mapHeight):
+            #     for column in range(mapWidth):
+            #         color = getColor(test.song.data[row].notesActive[column])
+            #         pygame.draw.rect(screen, color,(column*tileSize, row*tileHeight, tileSize, tileHeight))
+            #         for i in range(24):
+            #             screen.blit(font.render(letters[i],False, (255,255,255)), (10 + i * 60, -5))
             time.sleep(.1)
             # current_time += .25
 
-            pygame.display.update()
+            # pygame.display.update()

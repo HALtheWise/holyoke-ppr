@@ -17,7 +17,7 @@ import piano_key
 
 class PianoFingers:
     def __init__(self, controller, pkeys):
-        self.pressed = 245
+        self.pressed = 202
         self.controller = controller
         self.pkeys = pkeys
         self.finger_names = ['Thumb', 'Index', 'Middle', 'Ring', 'Pinky']
