@@ -1,3 +1,14 @@
+# ###############################################################################
+# HackHolyoke - PianoPianoRevolution                                            #
+#                                                                               #
+# Master Script of our project                                                  #
+#                                                                               #
+# Contains the script to play the piano using the Leap Motion, and also         #
+# implements a pygame DDR game that allows users to play and practice with this	#
+# invention.                                                                    #
+#                                                                               #
+# Created by Kevin Zhang, Kimberly Winter, Eric Miller, and Max Wei             #
+# ###############################################################################
 import pygame, sys
 from pygame.locals import *
 import noteParser
@@ -123,6 +134,12 @@ def getColor(val):
         return RED
 
 def process_events(keyslice):
+    """
+    this function handles keypresses and executes various other functions like
+    sound, pygame stuff, and history when a key is pressed
+
+    Note: this function is terribly written, we understand. It's a hackathon, and it does work.
+    """
 
     keypressed, keyunpressed = piano.on_frame()
     k = keypressed
@@ -391,6 +408,11 @@ def process_events(keyslice):
 
 
 if __name__ == "__main__":
+
+    """
+    the pygame stuff was unfortunately never fully integrated with the Leap Motion to create a cohesive game,
+    thus for the pygame portion has been commented out to allow full functionality for the Leap Motion Piano.
+    """
 
     # pygame.init()
     # pygame.font.init()

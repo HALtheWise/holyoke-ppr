@@ -17,7 +17,7 @@ import piano_key
 
 class PianoFingers:
     def __init__(self, controller, pkeys):
-        self.pressed = 202
+        self.pressed = 205
         self.controller = controller
         self.pkeys = pkeys
         self.finger_names = ['Thumb', 'Index', 'Middle', 'Ring', 'Pinky']
@@ -31,13 +31,12 @@ class PianoFingers:
         # Get the most recent frame and report some basic information
         frame = self.controller.frame()
 
-        # print "Frame id: %d, timestamp: %d, hands: %d, fingers: %d, tools: %d, gestures: %d" % (
-            #   frame.id, frame.timestamp, len(frame.hands), len(frame.fingers), len(frame.tools), len(frame.gestures()))
 
-        # Get hands
+        # Get key presses
         self.pressed_keys = [False] * 38
         self.unpressed_keys = [False] * 38
 
+        #Get hands
         for hand in frame.hands:
 
             handType = "Left hand" if hand.is_left else "Right hand"
@@ -45,31 +44,14 @@ class PianoFingers:
             print "  %s, position: %s" % (
                 handType, hand.palm_position)
 
-            # Get the hand's normal vector and direction
-            # normal = hand.palm_normal
-            # direction = hand.direction
 
-            # Calculate the hand's pitch, roll, and yaw angles
-            # print "  pitch: %f degrees, roll: %f degrees, yaw: %f degrees" % (
-            #     direction.pitch * Leap.RAD_TO_DEG,
-            #     normal.roll * Leap.RAD_TO_DEG,
-            #     direction.yaw * Leap.RAD_TO_DEG)
-
-            # Get arm bone
             arm = hand.arm
-            # print "  Arm direction: %s, wrist position: %s, elbow position: %s" % (
-            #     arm.direction,
-            #     arm.wrist_position,
-            #     arm.elbow_position)
 
             # Get fingers
             for finger in hand.fingers:
 
 
-                # Get bone
-                # if self.finger_names[finger.type] == "Index":
-                #     print "    %s finger" % (self.finger_names[finger.type])
-                #
+                # Get distal bone (the end of each finger)
                 bone = finger.bone(3)
                 # print "      Bone: %s, end: %s" % (self.bone_names[bone.type], bone.next_joint)
 

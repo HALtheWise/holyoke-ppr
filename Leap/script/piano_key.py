@@ -1,4 +1,16 @@
+# ###############################################################################
+# HackHolyoke - PianoPianoRevolution                                            #
+# Keyboard projection map for Leap Motion which stores the database of          #
+# locations for all the keys and reports whether a strike is in a specific key's#
+# boundaries  																	#
+#                                                                               #
+# Created by Kevin Zhang and Kimberly Winter                                    #
+# ###############################################################################
+
 class piano_key():
+	"""
+	creates a key with boundaries and a function to check if it has been hit
+	"""
 
 	def __init__(self, x1Bound,x2Bound, z1Bound, z2Bound):
 		self.x1Bound=x1Bound  #the boundaries of the key (each key can be defined as a rectangle)
@@ -12,6 +24,7 @@ class piano_key():
 		else:
 			return False
 
+#creates all the keys in a two octave range around middle C
 def create_piano_keys():
 	keyF3=piano_key(-214, -155, 5, 70)
 	keyF32=piano_key(-214, -191, -105, 5)
